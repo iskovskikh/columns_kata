@@ -14,9 +14,9 @@ class SimpleRepository():
 
         async with self.session_maker() as session:
             session.add(simple_model)
-            await session.flush()
+            await session.commit()
+
             print(f'>>>{simple_model.oid}')
             print(f'>>>{simple_model.title}')
             print(f'>>>{simple_model.is_simple}')
-            await session.commit()
 
