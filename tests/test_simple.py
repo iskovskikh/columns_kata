@@ -32,7 +32,7 @@ def session_maker(engine):
 
 # @pytest.fixture(scope='session')
 @pytest_asyncio.fixture(loop_scope="session", scope="session")
-async def init_db(engine,):
+async def init_db(engine, ):
     print('>>> create_all')
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -64,9 +64,11 @@ async def test_simple_add_again(session_maker, init_db):
     simple: SimpleModel = SimpleModel(title='simple title 2')
 
     simple_repository: SimpleRepository = SimpleRepository(session_maker=session_maker)
-    await simple_repository.add_simple(simple_model=simple)
+    simple_oid = await simple_repository.add_simple(simple_model=simple)
 
-    saved_simple: SimpleModel = await simple_repository.get_simple_by_oid(simple_oid=simple.oid)
+    assert simple.oid == simple_oid
+
+    saved_simple: SimpleModel = await simple_repository.get_simple_by_oid(simple_oid=simple_oid)
 
     assert saved_simple
     assert saved_simple.oid == 2

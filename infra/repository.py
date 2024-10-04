@@ -11,7 +11,7 @@ from infra.models import SimpleModel
 class SimpleRepository():
     session_maker: Callable[[], AsyncSession]
 
-    async def add_simple(self, simple_model: SimpleModel):
+    async def add_simple(self, simple_model: SimpleModel) -> int:
         async with self.session_maker() as session:
             session.add(simple_model)
             await session.commit()
@@ -24,6 +24,8 @@ class SimpleRepository():
             print(f'>>>{simple_model.oid}')
             print(f'>>>{simple_model.title}')
             # print(f'>>>{simple_model.is_simple}')
+
+            return simple_model.oid
 
     async def get_simple_by_oid(self, simple_oid: int) -> SimpleModel | None:
         async with self.session_maker() as session:
