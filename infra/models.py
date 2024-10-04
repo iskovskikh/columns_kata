@@ -12,5 +12,5 @@ class SimpleModel(Base):
     oid: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column()
     is_simple = column_property(
-        select(func.true()).scalar_subquery()
+        select(42).scalar_subquery()
     )
